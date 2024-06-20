@@ -5,7 +5,7 @@ import * as toml from 'toml';
 
 // Convert the toml files to json.
 glob.globSync('../json/**/*.toml').forEach(file => {
-    const destDir = path.dirname(file.replace('../db/', '../dist/db/'));
+    const destDir = path.dirname(file.replace('../json/', '../dist/json/'));
     fs.mkdirSync(destDir, { recursive: true });
 
     const destPath = path.join(destDir, path.basename(file, '.toml') + '.json');
