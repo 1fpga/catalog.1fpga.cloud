@@ -1,6 +1,0 @@
-{
-  "name": "golem-fpga-cloud",
-  "workspaces": [
-    "build/"
-  ]
-}
