@@ -1,0 +1,8 @@
+[nes]
+name = "NES"
+description = """\
+    The Nintendo Entertainment System (NES) is an 8-bit home video game console that was developed and \
+    manufactured by Nintendo. It was initially released in Japan as the Family Computer Famirī Konpyūta) \
+    (also known by the portmanteau abbreviation Famicom (Famikon) and abbreviated as FC) on July 15, 1983, \
+    and was later released in North America during 1985, in Europe during 1986, and Australia in 1987.\
+"""
