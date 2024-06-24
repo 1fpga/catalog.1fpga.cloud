@@ -24,6 +24,6 @@ static_sites:
     repo: 1fpga/golem.1fpga.cloud
   name: golem-1fpga-cloud
   source_dir: /
-  output_dir: /public
-  build_command: "for x in public/json/*.toml; do cat $x | yj -t > ${x/.toml/.json}; done"
+  output_dir: /dist
+  build_command: npm install && npm run -w build build
 
