@@ -6,3 +6,8 @@ description = """\
     (also known by the portmanteau abbreviation Famicom (Famikon) and abbreviated as FC) on July 15, 1983, \
     and was later released in North America during 1985, in Europe during 1986, and Australia in 1987.\
 """
+
+# This should be updated semi-regularly.
+database_url = "dat/nes.json"
+database_size = 1633145
+database_date = "2024-02-02"

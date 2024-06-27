@@ -1,0 +1,3 @@
+name = "1FPGA"
+cores = "source/cores.json"
+systems = "source/systems.json"
