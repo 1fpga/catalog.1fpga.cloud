@@ -8,6 +8,8 @@ description = """\
 """
 
 # This should be updated semi-regularly.
-database_url = "dat/nes.json"
-database_size = 1633145
-database_date = "2024-02-02"
+[nes.games_db]
+url = "dat/nes.json"
+size = 1633145
+sha1 = "e576f8641b5d3b3b832922fbb4c4cd8d9e1ccbcd"
+date = "2024-02-02"
