@@ -1,0 +1,9 @@
+name = "Mister Chess Core"
+uniqueName = "mister-chess"
+description = "Mister FPGA Chess core"
+systems = [ "chess" ]
+
+[[releases]]
+files = [
+    "./20240410/chess.rbf"
+]

@@ -1,0 +1,9 @@
+name = "Nintendo Entertainment System"
+uniqueName = "mister-nes"
+description = "Mister FPGA NES core"
+systems = [ "nes" ]
+
+[[releases]]
+files = [
+    "./20230223/nes.rbf"
+]

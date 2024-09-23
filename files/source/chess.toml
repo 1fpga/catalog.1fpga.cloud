@@ -1,0 +1,10 @@
+name = "Mister Chess"
+uniqueName = "chess"
+description = """\
+    A chess game for the MiSTer FPGA.\
+"""
+tags = [ "chess", "no-roms" ]
+
+[cores.mister-chess]
+version = "20240410"
+url = "../cores/mister-chess/mister-chess.json"

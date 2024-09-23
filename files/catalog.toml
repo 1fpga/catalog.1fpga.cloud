@@ -1,0 +1,11 @@
+name = "1FPGA"
+version = "20240920"
+lastUpdated = "2024-09-20"
+
+[systems.nes]
+url = "source/nes.json"
+version = "20240920"
+
+[systems.chess]
+url = "source/chess.json"
+version = "20240920"

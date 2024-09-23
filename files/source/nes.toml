@@ -1,5 +1,5 @@
-[nes]
 name = "NES"
+uniqueName = "nes"
 description = """\
     The Nintendo Entertainment System (NES) is an 8-bit home video game console that was developed and \
     manufactured by Nintendo. It was initially released in Japan as the Family Computer Famirī Konpyūta) \
@@ -8,8 +8,12 @@ description = """\
 """
 
 # This should be updated semi-regularly.
-[nes.games_db]
-url = "dat/nes.json"
+[gamesDb]
+version = "20240202"
+url = "../dat/nes.json"
 size = 1633145
 sha1 = "e576f8641b5d3b3b832922fbb4c4cd8d9e1ccbcd"
-date = "2024-02-02"
+
+[cores.mister-nes]
+version = "20230223"
+url = "../cores/mister-nes/mister-nes.json"
