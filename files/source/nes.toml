@@ -6,6 +6,9 @@ description = """\
     (also known by the portmanteau abbreviation Famicom (Famikon) and abbreviated as FC) on July 15, 1983, \
     and was later released in North America during 1985, in Europe during 1986, and Australia in 1987.\
 """
+tags = [ "nes", "nintendo" ]
+icon = "./nes-256.png"
+icon_256 = "./nes-256.png"
 
 # This should be updated semi-regularly.
 [gamesDb]

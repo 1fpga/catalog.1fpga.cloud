@@ -4,6 +4,7 @@ description = """\
     A chess game for the MiSTer FPGA.\
 """
 tags = [ "chess", "no-roms" ]
+icon = "./chess-256.png"
 
 [cores.mister-chess]
 version = "20240410"
