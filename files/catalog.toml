@@ -1,6 +1,6 @@
 name = "1FPGA"
 version = "20240920"
-lastUpdated = "2024-09-20"
+lastUpdated = "2024-09-20 00:00:00"
 
 [systems.nes]
 url = "source/nes.json"
