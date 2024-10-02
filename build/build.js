@@ -13,8 +13,13 @@ glob.globSync('../files/**', { nodir: true }).forEach(file => {
         const destPath = path.join(destDir, path.basename(file, '.toml') + '.json');
         const json = JSON.stringify(toml.parse(fs.readFileSync(file, 'utf8')));
         fs.writeFileSync(destPath, json);
-    } else if (path.basename(file) === 'README.md') {
+    } else if (path.extname(file) === '.md') {
         // Ignore README.md files.
+    } else if (path.extname(file) === '.json') {
+        // Minimize JSON files by reading and removing whitespaces.
+        const destPath = path.join(destDir, path.basename(file));
+        const json = JSON.stringify(JSON.parse(fs.readFileSync(file, 'utf8')));
+        fs.writeFileSync(destPath, json);
     } else {
         fs.copyFileSync(file, path.join(destDir, path.basename(file)));
     }
