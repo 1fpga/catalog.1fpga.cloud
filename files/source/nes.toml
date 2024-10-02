@@ -14,8 +14,8 @@ icon_256 = "./nes-256.png"
 [gamesDb]
 version = "20241001"
 url = "../games_db/nes.json"
-size = 4662905
-sha1 = "381b4f0dd3f000a4d5ccb4140d34b8c3a770538b"
+size = 0 # Updated by the build system.
+sha1 = "" # Updated by the build system.
 
 [cores.mister-nes]
 version = "20230223"

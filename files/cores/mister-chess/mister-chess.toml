@@ -9,5 +9,5 @@ version = "20240410"
 [[releases.files]]
 type = "mister.core.rbf"
 url = "./20240410/chess.rbf"
-size = 3711324
-sha1 = "ff24e45b6c079facc4702c923c6ec9ea97e65444"
+size = 0 # Updated by the build system.
+sha1 = "" # Updated by the build system.

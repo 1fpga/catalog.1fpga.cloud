@@ -10,5 +10,5 @@ tags = [ "latest" ]
 [[releases.files]]
 type = "mister.core.rbf"
 url = "./20230223/nes.rbf"
-size = 3204048
-sha1 = "cdef876281a9cffc30c58f9a1e41c11b92e992db"
+size = 0 # Updated by the build system.
+sha1 = "" # Updated by the build system.
