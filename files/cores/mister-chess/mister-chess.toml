@@ -5,6 +5,7 @@ systems = [ "chess" ]
 
 [[releases]]
 version = "20240410"
+tags = [ "latest" ]
 
 [[releases.files]]
 type = "mister.core.rbf"
