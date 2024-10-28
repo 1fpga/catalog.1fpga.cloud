@@ -3,6 +3,7 @@ uniqueName = "mister-chess"
 description = "Mister FPGA Chess core"
 systems = [ "other" ]
 icon = "./chess-256.png"
+tags = [ "no-roms" ]
 
 [[releases]]
 version = "20240410"

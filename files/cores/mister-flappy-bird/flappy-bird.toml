@@ -1,7 +1,8 @@
 name = "Mister Flappy Bird Core"
 uniqueName = "mister-flappy-bird"
 description = "Flappy Bird"
-systems = [ "flappy-bird" ]
+systems = [ "other" ]
+tags = [ "no-roms" ]
 
 [[releases]]
 version = "20200402"
