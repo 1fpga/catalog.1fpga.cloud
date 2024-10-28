@@ -6,6 +6,6 @@ lastUpdated = "2024-09-20 00:00:00"
 url = "source/nes.json"
 version = "20240920"
 
-[systems.chess]
-url = "source/chess.json"
+[systems.other]
+url = "source/other.json"
 version = "20240920"

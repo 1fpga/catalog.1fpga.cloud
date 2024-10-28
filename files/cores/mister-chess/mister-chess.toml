@@ -1,7 +1,8 @@
 name = "Mister Chess Core"
 uniqueName = "mister-chess"
 description = "Mister FPGA Chess core"
-systems = [ "chess" ]
+systems = [ "other" ]
+icon = "./chess-256.png"
 
 [[releases]]
 version = "20240410"
