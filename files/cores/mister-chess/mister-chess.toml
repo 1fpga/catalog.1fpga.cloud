@@ -1,7 +1,7 @@
 name = "Mister Chess Core"
 uniqueName = "mister-chess"
 description = "Mister FPGA Chess core"
-systems = [ "other" ]
+systems = [ "chess" ]
 icon = "./chess-256.png"
 tags = [ "no-roms" ]
 

@@ -1,0 +1,10 @@
+name = "Chess"
+uniqueName = "chess"
+description = "A chess game."
+tags = [ "chess", "no-roms" ]
+category = "other"
+icon = "./chess-256.png"
+
+[cores.mister-chess]
+version = "20240410"
+url = "../cores/mister-chess/mister-chess.json"

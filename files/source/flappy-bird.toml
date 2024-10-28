@@ -1,0 +1,10 @@
+name = "Flappy Bird"
+uniqueName = "flappy-bird"
+description = "Flappy Bird, the game."
+tags = [ "flappy-bird", "no-roms" ]
+category = "other"
+icon = "./other-256.png"
+
+[cores.mister-flappy-bird]
+version = "20200402"
+url = "../cores/mister-flappy-bird/flappy-bird.json"

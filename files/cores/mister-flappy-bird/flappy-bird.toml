@@ -1,7 +1,7 @@
 name = "Mister Flappy Bird Core"
 uniqueName = "mister-flappy-bird"
 description = "Flappy Bird"
-systems = [ "other" ]
+systems = [ "flappy-bird" ]
 tags = [ "no-roms" ]
 
 [[releases]]
