@@ -10,6 +10,6 @@ icon = "./other-256.png"
 version = "20240410"
 url = "../cores/mister-chess/mister-chess.json"
 
-[cores.flappy-bird]
+[cores.mister-flappy-bird]
 version = "20200402"
 url = "../cores/mister-flappy-bird/flappy-bird.json"
