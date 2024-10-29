@@ -1,0 +1,15 @@
+name = "Mister Memory Test"
+uniqueName = "mister-memtest"
+description = "Memory Test for the Mister FPGA"
+systems = [ "memtest" ]
+tags = [ "no-roms" ]
+
+[[releases]]
+version = "20210130"
+tags = [ "latest" ]
+
+[[releases.files]]
+type = "mister.core.rbf"
+url = "./20210130/memtest.rbf"
+size = 0 # Updated by the build system.
+sha1 = "" # Updated by the build system.

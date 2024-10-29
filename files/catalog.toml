@@ -1,6 +1,5 @@
 name = "1FPGA"
-version = "20240920"
-lastUpdated = "2024-09-20 00:00:00"
+version = "202401029"
 
 [systems.nes]
 url = "source/nes.json"
@@ -13,3 +12,7 @@ version = "20240920"
 [systems.flappy-bird]
 url = "source/flappy-bird.json"
 version = "20200402"
+
+[systems.memtest]
+url = "source/memtest.json"
+version = "20210130"

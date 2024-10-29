@@ -1,0 +1,9 @@
+name = "Memtest"
+uniqueName = "memtest"
+description = "Memory testing."
+tags = []
+category = "utility"
+
+[cores.mister-memtest]
+version = "20210130"
+url = "../cores/mister-memtest/mister-memtest.json"
