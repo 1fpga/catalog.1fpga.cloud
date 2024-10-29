@@ -1,5 +1,5 @@
 name = "1FPGA"
-version = "202401029"
+version = "20241029"
 
 [systems.nes]
 url = "source/nes.json"
