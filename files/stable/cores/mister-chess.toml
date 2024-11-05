@@ -1,7 +1,7 @@
-name = "Mister Chess Core"
+name = "Mister Chess"
 uniqueName = "mister-chess"
 description = "Mister FPGA Chess core"
-systems = [ "chess" ]
+systems = [ "other" ]
 icon = "./chess-256.png"
 tags = [ "no-roms" ]
 
@@ -11,6 +11,6 @@ tags = [ "latest" ]
 
 [[releases.files]]
 type = "mister.core.rbf"
-url = "./20240410/chess.rbf"
+url = "./releases/mister-chess/20240410/chess.rbf"
 size = 0 # Updated by the build system.
 sha1 = "" # Updated by the build system.

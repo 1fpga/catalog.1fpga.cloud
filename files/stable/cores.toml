@@ -1,0 +1,15 @@
+[mister-nes]
+url = "./cores/mister-nes.json"
+version = ""
+
+[mister-chess]
+url = "./cores/mister-chess.json"
+version = ""
+
+[mister-flappy-bird]
+url = "./cores/mister-flappy-bird.json"
+version = ""
+
+[mister-memtest]
+url = "./cores/mister-memtest.json"
+version = ""

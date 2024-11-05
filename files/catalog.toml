@@ -1,18 +1,10 @@
 name = "1FPGA"
-version = "20241029"
+version = "" # Updated by the build system.
 
-[systems.nes]
-url = "source/nes.json"
-version = "20240920"
+[cores]
+url = "./stable/cores.json"
+version = "" # Updated by the build system.
 
-[systems.chess]
-url = "source/chess.json"
-version = "20240920"
-
-[systems.flappy-bird]
-url = "source/flappy-bird.json"
-version = "20200402"
-
-[systems.memtest]
-url = "source/memtest.json"
-version = "20210130"
+[systems]
+url = "./stable/systems.json"
+version = "" # Updated by the build system.

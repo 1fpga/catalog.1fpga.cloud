@@ -1,0 +1,15 @@
+name = "NES"
+uniqueName = "nes"
+description = """\
+    The Nintendo Entertainment System (NES) is an 8-bit home video game console\
+    that was developed and manufactured by Nintendo.\
+"""
+tags = [ "nes", "nintendo", "8-bit" ]
+category = "console"
+
+# This should be updated semi-regularly.
+[gamesDb]
+version = "20241001"
+url = "./games_db/nes.json"
+size = 0 # Updated by the build system.
+sha1 = "" # Updated by the build system.
