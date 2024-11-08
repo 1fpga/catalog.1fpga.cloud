@@ -10,6 +10,14 @@ version = ""
 url = "./cores/mister-flappy-bird.json"
 version = ""
 
+[mister-arduboy]
+url = "./cores/mister-arduboy.json"
+version = ""
+
 [mister-memtest]
 url = "./cores/mister-memtest.json"
+version = ""
+
+[mister-inputtest]
+url = "./cores/mister-inputtest.json"
 version = ""

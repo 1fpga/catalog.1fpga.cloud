@@ -8,3 +8,7 @@ version = "" # Updated by the build system.
 [systems]
 url = "./stable/systems.json"
 version = "" # Updated by the build system.
+
+[[releases]]
+url = "./stable/releases.json"
+version = "" # Updated by the build system.

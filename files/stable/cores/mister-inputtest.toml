@@ -1,15 +1,15 @@
-name = "Mister Memory Test"
-uniqueName = "mister-memtest"
-description = "Memory Test for the Mister FPGA"
+name = "Mister Input Test"
+uniqueName = "mister-inputtest"
+description = "Input Test for the Mister FPGA"
 systems = [ "utility" ]
 tags = [ "no-roms" ]
 
 [[releases]]
-version = "20210130"
+version = "20240727"
 tags = [ "latest" ]
 
 [[releases.files]]
 type = "mister.core.rbf"
-url = "./releases/mister-memtest/20210130/memtest.rbf"
+url = "./releases/mister-inputtest/20240727/inputtest.rbf"
 size = 0 # Updated by the build system.
 sha1 = "" # Updated by the build system.

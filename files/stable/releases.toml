@@ -1,0 +1,8 @@
+version = "" # Updated by the build system.
+
+[[releases]]
+version = "0.2.0"
+tags = [ "latest" ]
+
+[[releases.files]]
+golem = "./releases/golem-"

@@ -1,0 +1,15 @@
+name = "Mister Arduboy"
+uniqueName = "mister-arduboy"
+description = "Mister FPGA Arduboy core"
+systems = [ "other" ]
+tags = [ "no-roms" ]
+
+[[releases]]
+version = "20220301"
+tags = [ "latest" ]
+
+[[releases.files]]
+type = "mister.core.rbf"
+url = "./releases/mister-arduboy/20220301/arduboy.rbf"
+size = 0 # Updated by the build system.
+sha1 = "" # Updated by the build system.

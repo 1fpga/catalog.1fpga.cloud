@@ -5,3 +5,7 @@ version = ""
 [other]
 url = "./systems/other.json"
 version = ""
+
+[utility]
+url = "./systems/utility.json"
+version = ""
