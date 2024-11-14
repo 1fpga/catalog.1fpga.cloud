@@ -12,4 +12,4 @@ category = "console"
 version = "20241001"
 url = "./games_db/nes.json"
 size = 0 # Updated by the build system.
-sha1 = "" # Updated by the build system.
+sha256 = "" # Updated by the build system.

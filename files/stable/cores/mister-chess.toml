@@ -13,4 +13,4 @@ tags = [ "latest" ]
 type = "mister.core.rbf"
 url = "./releases/mister-chess/20240410/chess.rbf"
 size = 0 # Updated by the build system.
-sha1 = "" # Updated by the build system.
+sha256 = "" # Updated by the build system.

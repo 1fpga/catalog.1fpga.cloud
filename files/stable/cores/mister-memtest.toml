@@ -12,4 +12,4 @@ tags = [ "latest" ]
 type = "mister.core.rbf"
 url = "./releases/mister-memtest/20210130/memtest.rbf"
 size = 0 # Updated by the build system.
-sha1 = "" # Updated by the build system.
+sha256 = "" # Updated by the build system.
