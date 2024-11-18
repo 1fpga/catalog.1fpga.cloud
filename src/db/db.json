@@ -3,6 +3,7 @@
   "db_url": "https://catalog.1fpga.cloud/db/db.json.zip",
   "files": {
     "Scripts/1fpga.sh": {
+      "url": "https://catalog.1fpga.cloud/db/Scripts/1fpga.sh",
       "hash": "e48a502956d62ff3e74287113a6258ef",
       "size": 831,
       "tags": [
