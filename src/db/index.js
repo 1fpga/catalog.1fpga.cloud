@@ -22,4 +22,7 @@ export async function build(dest) {
         archive.append(JSON.stringify(db), { name: 'db.json' });
         archive.finalize();
     });
+
+    // Copy other files.
+    await fs.copyFile('1fpga.sh', `${dest}/1fpga.sh`);
 }
