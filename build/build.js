@@ -16,6 +16,7 @@ MCowBQYDK2VwAyEA04SX9mHaW2D09TF5G7hOQrGgqf6uTUcRv4KOXhL4kCs=
  * `dist` folder (keeping the path from the `source`).
  * @param {string} source The source file.
  * @param {string?} dest The destination file.
+ * @returns {Promise<string>} The path to the destination file/directory copied.
  */
 async function copy(source, dest) {
     const sourcePath = path.resolve(process.cwd(), source);
@@ -58,6 +59,8 @@ async function copy(source, dest) {
             }
         }
     }
+
+    return destPath;
 }
 
 /**

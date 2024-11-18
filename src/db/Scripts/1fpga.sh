@@ -24,7 +24,11 @@ fi
 # ELSE we need to download the latest 1FPGA release and install it.
 
 # Download the release.
-curl --insecure -L "https://catalog.1fpga.cloud/stable/releases/latest/one_fpga" -o /media/fat/one_fpga
+curl --insecure --fail-with-body -L "https://catalog.1fpga.cloud/stable/releases/latest/one_fpga" -o /media/fat/one_fpga || (
+  echo "Failed to download 1FPGA."
+  read -r -p "Press enter to reboot."
+  reboot
+)
 
 echo "Starting 1FPGA"
 
@@ -32,7 +36,10 @@ echo "Starting 1FPGA"
 sync
 killall -9 MiSTer one_fpga
 cd /media/fat && (
-  /media/fat/one_fpga
+  /media/fat/one_fpga || (
+    echo "Failed to start 1FPGA."
+    read -r -p "Press enter to reboot."
+  )
 )
 
 # Once this is done, reboot back into MiSTer.
