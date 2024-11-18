@@ -5,9 +5,10 @@ import archiver from 'archiver';
 
 /**
  *
+ * @param {function(string, string?): Promise<void>} copy The function to copy files from source to dest.
  * @param {string} dest The destination folder for these files.
  */
-export async function build(dest) {
+export async function build(copy, dest) {
     const db = JSON.parse(await fs.readFile('db.json', 'utf8'));
 
     await new Promise((resolve, reject) => {
@@ -24,5 +25,5 @@ export async function build(dest) {
     });
 
     // Copy other files.
-    await fs.copyFile('1fpga.sh', `${dest}/1fpga.sh`);
+    await copy('Scripts');
 }

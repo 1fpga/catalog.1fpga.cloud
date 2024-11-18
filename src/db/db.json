@@ -1,5 +1,5 @@
 {
-  "db_id": "1fpga/1FPGA",
+  "db_id": "1fpga/1fpga",
   "db_url": "https://catalog.1fpga.cloud/db/db.json.zip",
   "files": {
     "Scripts/1fpga.sh": {

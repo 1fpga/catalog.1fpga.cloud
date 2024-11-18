@@ -11,7 +11,60 @@ MCowBQYDK2VwAyEA04SX9mHaW2D09TF5G7hOQrGgqf6uTUcRv4KOXhL4kCs=
 -----END PUBLIC KEY-----
 `.trim();
 
-// Update sha256sum and sizes.
+/**
+ * Copy a file from `source` to `dest`. If `dest` is not provided, it is assumed to be the
+ * `dist` folder (keeping the path from the `source`).
+ * @param {string} source The source file.
+ * @param {string?} dest The destination file.
+ */
+async function copy(source, dest) {
+    const sourcePath = path.resolve(process.cwd(), source);
+    const destPath = dest === undefined ? path.join(process.cwd(), 'dist', source) : path.resolve(process.cwd(), 'dist', dest);
+    await fs.mkdir(path.dirname(destPath), {recursive: true});
+
+    const stat = await fs.lstat(sourcePath);
+
+    // If `source` is a symbolic link, copy the link.
+    if (stat.isSymbolicLink()) {
+        // If the file is a symbolic link, copy the link
+        const link = path.resolve(path.dirname(sourcePath), await fs.readlink(sourcePath));
+        await copy(link, destPath);
+    } else if (stat.isDirectory()) {
+        // If `source` is a directory, copy everything recursively.
+        for (const fPath of await glob.glob(source + '/**', {nodir: true})) {
+            await copy(fPath, path.join(destPath, path.relative(source, fPath)));
+        }
+    } else {
+        // Process the file if needed.
+        switch (path.extname(sourcePath)) {
+            case '.toml': {
+                // Convert toml files to json.
+                const json = JSON.stringify(toml.parse(await fs.readFile(sourcePath, 'utf8')));
+                const dest = path.join(path.dirname(destPath), path.basename(destPath, '.toml') + '.json');
+                await fs.writeFile(dest, json);
+                break;
+            }
+            case '.md':
+                // Ignore Markdown files.
+                break;
+            case '.json': {
+                // Minimize JSON files by reading and removing whitespaces.
+                const json = JSON.stringify(JSON.parse(await fs.readFile(sourcePath, 'utf8')));
+                await fs.writeFile(destPath, json);
+                break;
+            }
+            default: {
+                await fs.cp(sourcePath, destPath, {dereference: true});
+            }
+        }
+    }
+}
+
+/**
+ * Calculate the size and sha256 of a file.
+ * @param path The path to the file.
+ * @returns {Promise<(number|string)[]>} The size and sha256 of the file.
+ */
 async function calculateSizeAndSha256(path) {
     const stat = await fs.stat(path);
     const size = stat.size;
@@ -193,33 +246,7 @@ try {
 }
 
 // Copy files, converting files as necessary.
-for (const file of await glob.glob('./files/**', {nodir: true})) {
-    const destDir = path.dirname(file.replace(/^files\//, 'dist/'));
-    await fs.mkdir(destDir, {recursive: true});
-
-    switch (path.extname(file)) {
-        case '.toml': {
-            // Convert toml files to json.
-            const destPath = path.join(destDir, path.basename(file, '.toml') + '.json');
-            const json = JSON.stringify(toml.parse(await fs.readFile(file, 'utf8')));
-            await fs.writeFile(destPath, json);
-            break;
-        }
-        case '.md':
-            // Ignore Markdown files.
-            break;
-        case '.json': {
-            // Minimize JSON files by reading and removing whitespaces.
-            const destPath = path.join(destDir, path.basename(file));
-            const json = JSON.stringify(JSON.parse(await fs.readFile(file, 'utf8')));
-            await fs.writeFile(destPath, json);
-            break;
-        }
-        default: {
-            await fs.cp(file, path.join(destDir, path.basename(file)), {verbatimSymlinks: true});
-        }
-    }
-}
+await copy('files', '.');
 
 // Updating the files with the information.
 const catalogPath = path.join(process.cwd(), './dist/catalog.json');
@@ -248,7 +275,14 @@ for (const dir of await glob.glob('./src/*/', {})) {
     process.chdir(dir);
 
     /** @type {Record} */
-    const f = await import (p);
-    await f.build(destDir);
+    const script = await import (p);
+    /** @type {function} */
+    const copyFn = async (source, maybeDest)  => {
+        const sourcePath = path.join(current, dir, source);
+        const dest = maybeDest ?? path.join(destDir, source);
+        await copy(sourcePath, dest);
+    };
+
+    await script.build(copyFn, destDir);
     process.chdir(current);
 }
