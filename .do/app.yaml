@@ -25,5 +25,5 @@ static_sites:
   name: golem-1fpga-cloud
   source_dir: /
   output_dir: /dist
-  build_command: npm install && npm run -w build build
+  build_command: npm install && npm run build
 

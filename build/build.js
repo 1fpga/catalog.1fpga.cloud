@@ -1,19 +1,21 @@
-import * as fs from 'fs';
+import fs from 'node:fs/promises';
+import * as path from 'node:path';
+import * as crypto from 'node:crypto';
 import * as glob from 'glob';
-import * as path from 'path';
 import * as toml from 'toml';
-import * as crypto from 'crypto';
 
 // The official 1FPGA public key. Updating this is risky.
-const PUBLIC_KEY = `-----BEGIN PUBLIC KEY-----
+const PUBLIC_KEY = `
+-----BEGIN PUBLIC KEY-----
 MCowBQYDK2VwAyEA04SX9mHaW2D09TF5G7hOQrGgqf6uTUcRv4KOXhL4kCs=
------END PUBLIC KEY-----`;
+-----END PUBLIC KEY-----
+`.trim();
 
 // Update sha256sum and sizes.
-function calculateSizeAndSha256(path) {
-    const stat = fs.statSync(path);
+async function calculateSizeAndSha256(path) {
+    const stat = await fs.stat(path);
     const size = stat.size;
-    const sha256 = crypto.createHash('sha256').update(fs.readFileSync(path)).digest('hex');
+    const sha256 = crypto.createHash('sha256').update(await fs.readFile(path)).digest('hex');
     return [size, sha256];
 }
 
@@ -27,15 +29,17 @@ function calculateSizeAndSha256(path) {
  * @returns The signature of the file, or `null` if the signature file does not exist.
  * @throws Error An error if the signature file exists but is invalid.
  */
-function calculateSignature(fPath, key = PUBLIC_KEY) {
+async function calculateSignature(fPath, key = PUBLIC_KEY) {
     const sigPath = fPath + '.sig';
-    if (!fs.existsSync(sigPath)) {
+    try {
+        await fs.access(sigPath);
+    } catch (_) {
         return null;
     }
 
     const publicKey = crypto.createPublicKey(key);
-    const data = Buffer.from(fs.readFileSync(fPath));
-    const sig = Buffer.from(fs.readFileSync(sigPath));
+    const data = Buffer.from(await fs.readFile(fPath));
+    const sig = Buffer.from(await fs.readFile(sigPath));
     const result = crypto.verify(null, data, publicKey, sig);
     if (result !== true) {
         throw new Error(`Could not validate signature in ${JSON.stringify(fPath)}...`);
@@ -64,17 +68,18 @@ function maxVersion(versions) {
 
 /**
  * Build the cores.json file.
- * @param catalog The catalog object.
- * @param catalogPath The path to the catalog.json file.
+ * @param {Record} catalog The catalog object.
+ * @param {string} catalogPath The path to the catalog.json file.
  */
-function buildCores(catalog, catalogPath) {
+async function buildCores(catalog, catalogPath) {
     const coresPath = path.join(path.dirname(catalogPath), catalog.cores.url);
-    const coresData = JSON.parse(fs.readFileSync(coresPath, 'utf8'));
+    const coresData = JSON.parse(await fs.readFile(coresPath, 'utf8'));
     let latestCoresVersion = catalog.cores.version ?? "0";
 
     for (const [_name, c] of Object.entries(coresData)) {
         const cPath = path.join(path.dirname(coresPath), c.url);
-        const cData = JSON.parse(fs.readFileSync(cPath, 'utf8'));
+        /** @type {Record} */
+        const cData = JSON.parse(await fs.readFile(cPath, 'utf8'));
         let latestVersion = c.version ?? "0";
 
         // Update the releases' files size and sha256.
@@ -82,7 +87,7 @@ function buildCores(catalog, catalogPath) {
             latestVersion = maxVersion([latestVersion, r.version]);
             for (const f of r.files) {
                 const fPath = path.join(path.dirname(cPath), f.url);
-                const [size, sha256] = calculateSizeAndSha256(fPath);
+                const [size, sha256] = await calculateSizeAndSha256(fPath);
                 f.size = size;
                 f.sha256 = sha256;
             }
@@ -90,27 +95,35 @@ function buildCores(catalog, catalogPath) {
 
         c.version = latestVersion;
         latestCoresVersion = maxVersion([latestCoresVersion, c.version]);
-        fs.writeFileSync(cPath, JSON.stringify(cData), 'utf8');
+        await fs.writeFile(cPath, JSON.stringify(cData), 'utf8');
     }
 
     catalog.cores.version = maxVersion([catalog.cores.version, latestCoresVersion]);
-    fs.writeFileSync(coresPath, JSON.stringify(coresData), 'utf8');
+    await fs.writeFile(coresPath, JSON.stringify(coresData), 'utf8');
 }
 
-function buildSystems(catalog, catalogPath) {
+/**
+ *
+ * @param {Record} catalog
+ * @param {string} catalogPath
+ * @returns {Promise<void>}
+ */
+async function buildSystems(catalog, catalogPath) {
     const systemsPath = path.join(path.dirname(catalogPath), catalog.systems.url);
-    const systemsData = JSON.parse(fs.readFileSync(systemsPath, 'utf8'));
+    /** @type {Record} */
+    const systemsData = JSON.parse(await fs.readFile(systemsPath, 'utf8'));
     let latestSystemsVersion = systemsData.version ?? "0";
 
     for (const [_name, s] of Object.entries(systemsData)) {
         const sPath = path.join(path.dirname(systemsPath), s.url);
-        const sData = JSON.parse(fs.readFileSync(sPath, 'utf8'));
+        /** @type {Record} */
+        const sData = JSON.parse(await fs.readFile(sPath, 'utf8'));
         let latestVersion = maxVersion([s.version, sData.version, "0"]);
 
         // Update the gamesDb of the system.
         if (sData.gamesDb) {
             const gamesDbPath = path.join(path.dirname(sPath), sData.gamesDb.url);
-            const [size, sha256] = calculateSizeAndSha256(gamesDbPath);
+            const [size, sha256] = await calculateSizeAndSha256(gamesDbPath);
             sData.gamesDb.size = size;
             sData.gamesDb.sha256 = sha256;
 
@@ -122,20 +135,29 @@ function buildSystems(catalog, catalogPath) {
         s.version = latestVersion;
         sData.version = latestVersion;
         latestSystemsVersion = maxVersion([latestSystemsVersion, s.version]);
-        fs.writeFileSync(sPath, JSON.stringify(sData), 'utf8');
+        await fs.writeFile(sPath, JSON.stringify(sData), 'utf8');
     }
 
     catalog.systems.version = maxVersion([catalog.systems.version, latestSystemsVersion]);
-    fs.writeFileSync(systemsPath, JSON.stringify(systemsData), 'utf8');
+    await fs.writeFile(systemsPath, JSON.stringify(systemsData), 'utf8');
 }
 
-function buildReleases(catalog, catalogPath) {
+/**
+ *
+ * @param {Record} catalog
+ * @param {string} catalogPath
+ * @returns {Promise<void>}
+ */
+async function buildReleases(catalog, catalogPath) {
     const releasesPath = path.join(path.dirname(catalogPath), catalog.releases.url);
-    const releasesData = JSON.parse(fs.readFileSync(releasesPath, 'utf8'));
+    /** @type {Record} */
+    const releasesData = JSON.parse(await fs.readFile(releasesPath, 'utf8'));
     let latestReleasesVersion = catalog.releases.version ?? "0";
     let latestTagVersion = undefined;
 
-    for (const [_name, r] of Object.entries(releasesData)) {
+    for (const value of Object.values(releasesData)) {
+        /** @type {Record} */
+        const r = value;
         for (const v of r) {
             latestReleasesVersion = maxVersion([latestReleasesVersion, v.version]);
             if ((r.tags ?? []).includes("latest")) {
@@ -145,7 +167,7 @@ function buildReleases(catalog, catalogPath) {
             // Update the files size and sha256.
             for (const f of v.files) {
                 const fPath = path.join(path.dirname(releasesPath), f.url);
-                const [size, sha256] = calculateSizeAndSha256(fPath);
+                const [size, sha256] = await calculateSizeAndSha256(fPath);
                 f.size = size;
                 f.sha256 = sha256;
 
@@ -160,43 +182,73 @@ function buildReleases(catalog, catalogPath) {
     }
 
     catalog.releases.version = latestTagVersion ?? maxVersion([catalog.releases.version, latestReleasesVersion]);
-    fs.writeFileSync(releasesPath, JSON.stringify(releasesData), 'utf8');
+    await fs.writeFile(releasesPath, JSON.stringify(releasesData), 'utf8');
+}
+
+// Ignore errors when deleting the `dist/` folder (e.g. it doesn't exist).
+try {
+    // Deleting the `dist/` folder.
+    await fs.rm('./dist', {recursive: true});
+} catch (_) {
 }
 
 // Copy files, converting files as necessary.
-glob.globSync('../files/**', { nodir: true }).forEach(file => {
-    const destDir = path.dirname(file.replace('../files/', '../dist/'));
-    fs.mkdirSync(destDir, { recursive: true });
+for (const file of await glob.glob('./files/**', {nodir: true})) {
+    const destDir = path.dirname(file.replace(/^files\//, 'dist/'));
+    await fs.mkdir(destDir, {recursive: true});
 
-    // Convert toml files to json.
-    if (path.extname(file) === '.toml') {
-        const destPath = path.join(destDir, path.basename(file, '.toml') + '.json');
-        const json = JSON.stringify(toml.parse(fs.readFileSync(file, 'utf8')));
-        fs.writeFileSync(destPath, json);
-    } else if (path.extname(file) === '.md') {
-        // Ignore README.md files.
-    } else if (path.extname(file) === '.json') {
-        // Minimize JSON files by reading and removing whitespaces.
-        const destPath = path.join(destDir, path.basename(file));
-        const json = JSON.stringify(JSON.parse(fs.readFileSync(file, 'utf8')));
-        fs.writeFileSync(destPath, json);
-    } else {
-        fs.copyFileSync(file, path.join(destDir, path.basename(file)));
+    switch (path.extname(file)) {
+        case '.toml': {
+            // Convert toml files to json.
+            const destPath = path.join(destDir, path.basename(file, '.toml') + '.json');
+            const json = JSON.stringify(toml.parse(await fs.readFile(file, 'utf8')));
+            await fs.writeFile(destPath, json);
+            break;
+        }
+        case '.md':
+            // Ignore Markdown files.
+            break;
+        case '.json': {
+            // Minimize JSON files by reading and removing whitespaces.
+            const destPath = path.join(destDir, path.basename(file));
+            const json = JSON.stringify(JSON.parse(await fs.readFile(file, 'utf8')));
+            await fs.writeFile(destPath, json);
+            break;
+        }
+        default: {
+            await fs.cp(file, path.join(destDir, path.basename(file)), {verbatimSymlinks: true});
+        }
     }
-});
+}
 
 // Updating the files with the information.
-const catalogPath = path.join(process.cwd(),'../dist/catalog.json');
-const catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
+const catalogPath = path.join(process.cwd(), './dist/catalog.json');
+const catalog = JSON.parse(await fs.readFile(catalogPath, 'utf8'));
 
-buildCores(catalog, catalogPath);
-buildSystems(catalog, catalogPath);
-buildReleases(catalog, catalogPath);
+await buildCores(catalog, catalogPath);
+await buildSystems(catalog, catalogPath);
+await buildReleases(catalog, catalogPath);
 
 // Update the version of catalog.json
 const d = new Date();
-const y= d.getFullYear();
-const m= d.getMonth() + 1;
-const day= d.getDate();
+const y = d.getFullYear();
+const m = d.getMonth() + 1;
+const day = d.getDate();
 catalog.version = `${y}${m < 10 ? '0' : ''}${m}${day < 10 ? '0' : ''}${day}`;
-fs.writeFileSync(catalogPath, JSON.stringify(catalog), 'utf8');
+await fs.writeFile(catalogPath, JSON.stringify(catalog), 'utf8');
+
+// Load all the `src` files.
+for (const dir of await glob.glob('./src/*/', {})) {
+    // Using `..` because this (build) file is in the `build` folder, but we run from the root.
+    const p = `../${dir}/index.js`;
+    const destDir = path.join(process.cwd(), dir.replace(/^src\//, 'dist/'));
+    await fs.mkdir(destDir, {recursive: true});
+
+    const current = process.cwd();
+    process.chdir(dir);
+
+    /** @type {Record} */
+    const f = await import (p);
+    await f.build(destDir);
+    process.chdir(current);
+}
