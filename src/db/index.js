@@ -25,6 +25,9 @@ async function calculateSizeAndMd5(path) {
 export async function build(copy, dest) {
     const db = toml.parse(await fs.readFile('db.toml', 'utf8'));
 
+    // Update timestamp
+    db.timestamp = Math.floor(Date.now() / 1000.0);
+
     // Update the db with MD5 and size.
     const [size, md5sum] = await calculateSizeAndMd5('Scripts/1fpga.sh');
     db.files['Scripts/1fpga.sh'].hash = md5sum;

@@ -1,6 +1,6 @@
 db_id = "1fpga/1fpga"
 db_url = "https://catalog.1fpga.cloud/db/db.json.zip"
-timestamp = 1731953763
+timestamp = 0 # Updated by the build system.
 
 [files."Scripts/1fpga.sh"]
 url = "https://catalog.1fpga.cloud/db/Scripts/1fpga.sh"
