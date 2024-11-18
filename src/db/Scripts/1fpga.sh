@@ -17,6 +17,10 @@ then
   killall -9 MiSTer one_fpga
   cd /media/fat && (
     /media/fat/one_fpga
+  ) || (
+    echo "An error occured while starting 1FPGA."
+    rm /media/fat/one_fpga
+    read -r -p "Press enter to reboot."
   )
   reboot
 fi
