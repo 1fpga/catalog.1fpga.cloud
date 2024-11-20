@@ -227,7 +227,7 @@ async function buildReleases(catalog, catalogPath) {
                 f.size = size;
                 f.sha256 = sha256;
 
-                const signature = calculateSignature(fPath);
+                const signature = await calculateSignature(fPath);
                 if (!signature) {
                     delete f.signature;
                 } else {
