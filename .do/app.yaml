@@ -19,7 +19,7 @@ region: nyc
 static_sites:
 - environment_slug: html
   github:
-    branch: release
+    branch: main
     deploy_on_push: true
     repo: 1fpga/catalog.1fpga.cloud
   name: catalog-1fpga-cloud
