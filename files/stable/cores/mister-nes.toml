@@ -1,0 +1,14 @@
+name = "Nintendo Entertainment System"
+uniqueName = "mister-nes"
+description = "Mister NES core"
+systems = [ "nes" ]
+
+[[releases]]
+version = "20230223"
+tags = [ "latest" ]
+
+[[releases.files]]
+type = "mister.core.rbf"
+url = "./releases/mister-nes/20230223/nes.rbf"
+size = 0 # Updated by the build system.
+sha256 = "" # Updated by the build system.

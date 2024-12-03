@@ -1,0 +1,9 @@
+[[1fpga]]
+version = "0.2.0"
+tags = [ "latest" ]
+
+[[1fpga.files]]
+url = "./releases/1fpga/0.2.0/one_fpga"
+signature = "" # Updated by the build system.
+sha256 = "" # Updated by the build system.
+size = 0 # Updated by the build system.

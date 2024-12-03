@@ -2,7 +2,7 @@ alerts:
 - rule: DEPLOYMENT_FAILED
 - rule: DOMAIN_FAILED
 domains:
-- domain: golem.1fpga.cloud
+- domain: catalog.1fpga.cloud
   type: PRIMARY
   zone: 1fpga.cloud
 features:
@@ -10,20 +10,20 @@ features:
 ingress:
   rules:
   - component:
-      name: golem-1fpga-cloud
+      name: catalog-1fpga-cloud
     match:
       path:
         prefix: /
-name: golem-1fpga-cloud
+name: catalog-1fpga-cloud
 region: nyc
 static_sites:
 - environment_slug: html
   github:
     branch: release
     deploy_on_push: true
-    repo: 1fpga/golem.1fpga.cloud
-  name: golem-1fpga-cloud
+    repo: 1fpga/catalog.1fpga.cloud
+  name: catalog-1fpga-cloud
   source_dir: /
   output_dir: /dist
-  build_command: npm install && npm run -w build build
+  build_command: npm install && npm run build
 

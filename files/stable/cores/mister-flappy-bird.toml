@@ -1,0 +1,15 @@
+name = "Mister Flappy Bird Core"
+uniqueName = "mister-flappy-bird"
+description = "Flappy Bird"
+systems = [ "other" ]
+tags = [ "no-roms", "flappy-bird" ]
+
+[[releases]]
+version = "20200402"
+tags = [ "latest" ]
+
+[[releases.files]]
+type = "mister.core.rbf"
+url = "./releases/mister-flappy-bird/20200402/flappy-bird.rbf"
+size = 0 # Updated by the build system.
+sha256 = "" # Updated by the build system.

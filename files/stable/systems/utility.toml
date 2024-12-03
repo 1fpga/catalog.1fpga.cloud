@@ -1,0 +1,6 @@
+name = "Utilities"
+uniqueName = "utility"
+description = "Utilities for the Mister."
+tags = [ ]
+category = "blue"
+version = "20210130"

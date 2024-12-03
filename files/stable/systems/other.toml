@@ -1,0 +1,6 @@
+name = "Others"
+uniqueName = "other"
+description = "Other systems that don't fit into any other category."
+tags = [ ]
+category = "other"
+version = "20241030"

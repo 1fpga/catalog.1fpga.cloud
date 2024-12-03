@@ -1,6 +1,23 @@
 {
-  "name": "golem-fpga-cloud",
-  "workspaces": [
-    "build/"
-  ]
+  "name": "build-script",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "build": "node ./build/build",
+    "serve": "http-server ./dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "archiver": "^7.0.1",
+    "glob": "10.4.2",
+    "toml": "^3.0.0"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
 }

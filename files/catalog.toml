@@ -1,0 +1,14 @@
+name = "1FPGA"
+version = "" # Updated by the build system.
+
+[cores]
+url = "./stable/cores.json"
+version = "" # Updated by the build system.
+
+[systems]
+url = "./stable/systems.json"
+version = "" # Updated by the build system.
+
+[releases]
+url = "./stable/releases.json"
+version = "" # Updated by the build system.
