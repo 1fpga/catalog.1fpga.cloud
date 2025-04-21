@@ -7,9 +7,10 @@ description = """\
 tags = [ "nes", "nintendo", "8-bit" ]
 category = "console"
 
-# This should be updated semi-regularly.
+# This is deprecated, but kept in case people use an older version.
+# Remove this by 0.2.4.
 [gamesDb]
 version = "20241001"
-url = "./games_db/nes.json"
+url = "./nes/nes.json"
 size = 0 # Updated by the build system.
 sha256 = "" # Updated by the build system.

@@ -1,5 +1,8 @@
 [nes]
 url = "./systems/nes.json"
+db = "./systems/nes.catalog"
+dbSize = 0 # Updated by the build system.
+dbSha256 = "" # Updated by the build system.
 version = ""
 
 [other]
