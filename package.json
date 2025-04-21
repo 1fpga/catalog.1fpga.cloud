@@ -13,12 +13,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@sqltags/sqlite": "^0.0.26",
-    "archiver": "^7.0.1",
-    "cli-progress": "^3.12.0",
+    "@sqltags/sqlite": "0.0.26",
+    "archiver": "7.0.1",
+    "cli-progress": "3.12.0",
     "glob": "10.4.2",
-    "sqlite3": "^5.1.7",
-    "toml": "^3.0.0"
+    "sqlite3": "5.1.7",
+    "toml": "3.0.0"
   },
   "devDependencies": {
     "http-server": "^14.1.1"
