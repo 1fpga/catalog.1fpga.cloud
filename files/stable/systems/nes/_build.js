@@ -14,8 +14,7 @@ import cliProgress from 'cli-progress';
 async function insertTag(sql, name, table = "tags") {
     const [row] = await sql`
         INSERT INTO ${sql.id(table)}
-            ${sql.insertValues({name})}
-        ON CONFLICT
+            ${sql.insertValues({name})} ON CONFLICT
         DO NOTHING
         RETURNING id
     `;
@@ -56,7 +55,7 @@ export async function build(copy, dest) {
     }
 
     // Insert system-level tags.
-    const system = (await import(`${dest}/../nes.json`, {assert: {type: 'json'}})).default;
+    const system = JSON.parse(await fs.readFile(`${dest}/../nes.json`, "utf-8"));
     for (const key of Object.getOwnPropertyNames(system)) {
         const value = system[key];
         if (typeof value == "string") {
@@ -74,7 +73,7 @@ export async function build(copy, dest) {
         `;
     }
 
-    const gamesDb = (await import('./nes.json', {assert: {type: 'json'}})).default;
+    const gamesDb = JSON.parse(await fs.readFile("./nes.json", "utf-8")); //(await import('./nes.json', {type: 'json'})).default;
 
     // Insert version.
     const d = new Date();
@@ -83,13 +82,18 @@ export async function build(copy, dest) {
     const day = d.getDate();
     const version = gamesDb.version ?? `${y}${m < 10 ? '0' : ''}${m}${day < 10 ? '0' : ''}${day}`;
     await sql`
-        INSERT INTO metadata (key, value) VALUES ('version', ${version})`;
+        INSERT INTO metadata (key, value)
+        VALUES ('version', ${version})`;
 
     // Insert the whole games identification.
     console.log("Inserting games...");
     let bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
     if (!process.stdout.isTTY) {
-        bar = {value: 0, update: () => {}, stop: () => {}};
+        bar = {
+            value: 0, update: () => {
+            }, stop: () => {
+            }
+        };
     } else {
         bar.start(gamesDb['games'].length, 0);
     }
@@ -126,8 +130,7 @@ export async function build(copy, dest) {
                     title, // For now always use the full name or original title.
                     original_title,
                     year: year ?? null
-                })}
-                RETURNING id
+                })} RETURNING id
         `;
 
         // Insert tags.
