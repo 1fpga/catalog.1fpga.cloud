@@ -12,3 +12,6 @@ version = "" # Updated by the build system.
 [releases]
 url = "./stable/releases.json"
 version = "" # Updated by the build system.
+
+[1fpga]
+

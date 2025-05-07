@@ -14,7 +14,8 @@ import cliProgress from 'cli-progress';
 async function insertTag(sql, name, table = "tags") {
     const [row] = await sql`
         INSERT INTO ${sql.id(table)}
-            ${sql.insertValues({name})} ON CONFLICT
+            ${sql.insertValues({name})}
+        ON CONFLICT
         DO NOTHING
         RETURNING id
     `;
@@ -68,8 +69,8 @@ export async function build(copy, dest) {
     for (const tag of system.tags ?? []) {
         const tagId = await insertTag(sql, tag);
         await sql`
-            INSERT INTO system_tags
-                ${sql.insertValues({tag_id: tagId})}
+            INSERT INTO SystemTags
+                ${sql.insertValues({tagId})}
         `;
     }
 
@@ -82,7 +83,7 @@ export async function build(copy, dest) {
     const day = d.getDate();
     const version = gamesDb.version ?? `${y}${m < 10 ? '0' : ''}${m}${day < 10 ? '0' : ''}${day}`;
     await sql`
-        INSERT INTO metadata (key, value)
+        INSERT INTO Metadata (key, value)
         VALUES ('version', ${version})`;
 
     // Insert the whole games identification.
@@ -104,7 +105,7 @@ export async function build(copy, dest) {
         const TAGS_RE = /[(\[](?<tag>.*?)[)\]]/g;
         const SHORTNAME_RE = /^(?<name>.*?)\s*[(\[]/;
 
-        let {name, shortname, name_alt, region, languages, year, tags, sources} = g;
+        let {name, shortname, nameAlt, region, languages, year, tags, sources} = g;
         shortname = shortname ?? (SHORTNAME_RE.exec(name)?.groups?.name ?? null);
 
         let tag;
@@ -122,13 +123,13 @@ export async function build(copy, dest) {
             .filter(l => !!l);
 
         let title = shortname ?? null;
-        let original_title = name_alt ?? null;
+        let originalTitle = nameAlt ?? null;
         const [{id: gameId}] = await sql`
-            INSERT INTO games_id
+            INSERT INTO GamesId
                 ${sql.insertValues({
                     fullname: name,
                     title, // For now always use the full name or original title.
-                    original_title,
+                    originalTitle,
                     year: year ?? null
                 })} RETURNING id
         `;
@@ -137,8 +138,8 @@ export async function build(copy, dest) {
         await Promise.all(tags.map(async t => {
             const tagId = await insertTag(sql, t);
             await sql`
-                INSERT INTO games_tags
-                    ${sql.insertValues({game_id: gameId, tag_id: tagId})}
+                INSERT INTO GamesTags
+                    ${sql.insertValues({gameId, tagId})}
             `;
         }));
 
@@ -147,8 +148,8 @@ export async function build(copy, dest) {
             const regionId = await insertTag(sql, r, "regions");
 
             await sql`
-                INSERT INTO games_regions
-                    ${sql.insertValues({game_id: gameId, region_id: regionId})}
+                INSERT INTO GamesRegions
+                    ${sql.insertValues({gameId, regionId})}
             `;
         }));
 
@@ -157,8 +158,8 @@ export async function build(copy, dest) {
             const languageId = await insertTag(sql, l, "languages");
 
             await sql`
-                INSERT INTO games_languages
-                    ${sql.insertValues({game_id: gameId, language_id: languageId})}
+                INSERT INTO GamesLanguages
+                    ${sql.insertValues({gameId, languageId})}
             `;
         }));
 
@@ -168,8 +169,8 @@ export async function build(copy, dest) {
                 let {sha256, size, extension} = f;
                 sha256 = Buffer.from(sha256, 'hex');
                 await sql`
-                    INSERT INTO games_sources
-                        ${sql.insertValues({game_id: gameId, sha256, size, extension})}
+                    INSERT INTO GamesSources
+                        ${sql.insertValues({gameId, sha256, size, extension})}
                 `;
 
             }))
