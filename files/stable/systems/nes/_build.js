@@ -45,7 +45,7 @@ export async function build(copy, dest) {
     await copy('nes.json');
 
     // Build the SQLite database in the parent systems folder.
-    const db = new sqlite.Database(`${dest}/../nes.catalog`);
+    const db = new sqlite.Database(`${dest}/nes.sqlite`);
     db.exec(await fs.readFile('init.sql', 'utf8'));
 
     db.exec("BEGIN TRANSACTION");

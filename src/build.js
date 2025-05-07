@@ -247,14 +247,14 @@ async function buildSystems(catalog, catalogPath) {
             }
         }
 
-        if (s.db !== undefined) {
-            const dbPath = path.join(path.dirname(systemsPath), s.db);
+        if (sData.db) {
+            const dbPath = path.join(path.dirname(sPath), sData.db.url);
             const [dbSize, dbSha256] = await calculateSizeAndSha256(dbPath);
-            s.dbSize = dbSize;
-            s.dbSha256 = dbSha256;
+            sData.db.size = dbSize;
+            sData.db.sha256 = dbSha256;
         }
-        s.version = latestVersion;
 
+        s.version = latestVersion;
         sData.version = latestVersion;
         latestSystemsVersion = maxVersion([latestSystemsVersion, s.version]);
         await fs.writeFile(sPath, JSON.stringify(sData), 'utf8');

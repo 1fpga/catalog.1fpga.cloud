@@ -4,7 +4,7 @@ description = """\
     The Nintendo Entertainment System (NES) is an 8-bit home video game console\
     that was developed and manufactured by Nintendo.\
 """
-tags = [ "nes", "nintendo", "8-bit" ]
+tags = ["nes", "nintendo", "8-bit"]
 category = "console"
 
 # This is deprecated, but kept in case people use an older version.
@@ -13,4 +13,9 @@ category = "console"
 version = "20241001"
 url = "./nes/nes.json"
 size = 0 # Updated by the build system.
+sha256 = "" # Updated by the build system.
+
+[db]
+url = "./nes/nes.sqlite"
+size = 0    # Updated by the build system.
 sha256 = "" # Updated by the build system.
