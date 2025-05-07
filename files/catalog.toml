@@ -1,4 +1,5 @@
 name = "1FPGA"
+uniqueName = "1fpga"
 version = "" # Updated by the build system.
 
 [cores]
