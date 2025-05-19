@@ -1,12 +1,12 @@
-name = "Input Test Core"
+name = "Mister Input Test"
 uniqueName = "mister-inputtest"
 description = "Input Test for the Mister FPGA"
-systems = ["utility"]
-tags = ["no-roms"]
+systems = [ "utility" ]
+tags = [ "no-roms" ]
 
 [[releases]]
 version = "20240727"
-tags = ["latest"]
+tags = [ "latest" ]
 
 [[releases.files]]
 type = "mister.core.rbf"
