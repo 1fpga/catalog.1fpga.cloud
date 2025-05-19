@@ -1,12 +1,13 @@
 name = "Mister Arduboy"
+gameName = "Arduboy (MiSTer)"
 uniqueName = "mister-arduboy"
 description = "Mister FPGA Arduboy core"
-systems = [ "other" ]
-tags = [ "no-roms" ]
+systems = ["other"]
+tags = ["no-roms", "game"]
 
 [[releases]]
 version = "20220301"
-tags = [ "latest" ]
+tags = ["latest"]
 
 [[releases.files]]
 type = "mister.core.rbf"

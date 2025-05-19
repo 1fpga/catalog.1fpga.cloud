@@ -1,12 +1,12 @@
 name = "Mister Memory Test"
 uniqueName = "mister-memtest"
 description = "Memory Test for the Mister FPGA"
-systems = [ "utility" ]
-tags = [ "no-roms" ]
+systems = ["utility"]
+tags = []
 
 [[releases]]
 version = "20210130"
-tags = [ "latest" ]
+tags = ["latest"]
 
 [[releases.files]]
 type = "mister.core.rbf"

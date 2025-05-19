@@ -1,13 +1,14 @@
 name = "Mister Chess"
+gameName = "Chess"
 uniqueName = "mister-chess"
 description = "Mister FPGA Chess core"
-systems = [ "other" ]
+systems = ["other"]
 icon = "./chess-256.png"
-tags = [ "no-roms" ]
+tags = ["no-roms", "game"]
 
 [[releases]]
 version = "20240410"
-tags = [ "latest" ]
+tags = ["latest"]
 
 [[releases.files]]
 type = "mister.core.rbf"

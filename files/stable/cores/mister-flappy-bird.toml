@@ -1,12 +1,13 @@
 name = "Mister Flappy Bird Core"
+gameName = "Flappy Bird"
 uniqueName = "mister-flappy-bird"
 description = "Flappy Bird"
-systems = [ "other" ]
-tags = [ "no-roms", "flappy-bird" ]
+systems = ["other"]
+tags = ["no-roms", "flappy-bird", "game"]
 
 [[releases]]
 version = "20200402"
-tags = [ "latest" ]
+tags = ["latest"]
 
 [[releases.files]]
 type = "mister.core.rbf"
