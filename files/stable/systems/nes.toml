@@ -16,6 +16,7 @@ size = 0 # Updated by the build system.
 sha256 = "" # Updated by the build system.
 
 [db]
+version = "20241001"
 url = "./nes/nes.sqlite"
 size = 0    # Updated by the build system.
 sha256 = "" # Updated by the build system.
