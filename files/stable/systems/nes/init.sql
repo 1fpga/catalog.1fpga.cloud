@@ -31,9 +31,9 @@ CREATE TABLE Regions
 -- System tags.
 CREATE TABLE SystemTags
 (
-    id    INTEGER PRIMARY KEY,
-    tagId INTEGER REFERENCES Tags (id),
-    CONSTRAINT uniqueTag UNIQUE (tagId)
+    id     INTEGER PRIMARY KEY,
+    tagsId INTEGER REFERENCES Tags (id),
+    CONSTRAINT uniqueTag UNIQUE (id, tagsId)
 );
 
 -- The identification database itself. Will be populated from the games.json file.
@@ -49,7 +49,7 @@ CREATE TABLE GamesId
 CREATE TABLE GamesSources
 (
     id        INTEGER PRIMARY KEY,
-    gameId    INTEGER REFERENCES GamesId (id),
+    gamesId   INTEGER REFERENCES GamesId (id),
     extension TEXT NOT NULL,
     sha256    BLOB NOT NULL,
     size      INTEGER
@@ -57,24 +57,38 @@ CREATE TABLE GamesSources
 
 CREATE TABLE GamesTags
 (
-    id     INTEGER PRIMARY KEY,
-    gameId INTEGER REFERENCES GamesId (id),
-    tagId  INTEGER REFERENCES Tags (id),
-    CONSTRAINT uniqueTag UNIQUE (gameId, tagId)
+    id      INTEGER PRIMARY KEY,
+    gamesId INTEGER REFERENCES GamesId (id),
+    tagsId  INTEGER REFERENCES Tags (id),
+    CONSTRAINT uniqueTag UNIQUE (gamesId, tagsId)
 );
 
 CREATE TABLE GamesLanguages
 (
-    id         INTEGER PRIMARY KEY,
-    gameId     INTEGER REFERENCES GamesId (id),
-    languageId INTEGER REFERENCES Languages (id),
-    CONSTRAINT uniqueLanguage UNIQUE (gameId, languageId)
+    id          INTEGER PRIMARY KEY,
+    gamesId     INTEGER REFERENCES GamesId (id),
+    languagesId INTEGER REFERENCES Languages (id),
+    CONSTRAINT uniqueLanguage UNIQUE (gamesId, languagesId)
 );
 
 CREATE TABLE GamesRegions
 (
-    id       INTEGER PRIMARY KEY,
-    gameId   INTEGER REFERENCES GamesId (id),
-    regionId INTEGER REFERENCES Regions (id),
-    CONSTRAINT uniqueRegion UNIQUE (gameId, regionId)
+    id        INTEGER PRIMARY KEY,
+    gamesId   INTEGER REFERENCES GamesId (id),
+    regionsId INTEGER REFERENCES Regions (id),
+    CONSTRAINT uniqueRegion UNIQUE (gamesId, regionsId)
+);
+
+CREATE TABLE Playlists
+(
+    id   INTEGER PRIMARY KEY,
+    name TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE PlaylistsGamesId
+(
+    playlistsId INTEGER REFERENCES Playlists (id),
+    gamesId     INTEGER REFERENCES GamesId (id),
+    priority    INTEGER,
+    CONSTRAINT uniquePlaylistsGamesSources UNIQUE (playlistsId, gamesId)
 );

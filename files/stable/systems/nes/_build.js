@@ -19,20 +19,20 @@ async function insertTag(sql, name, table = "tags") {
         DO NOTHING
         RETURNING id
     `;
-    let tagId = row?.id;
-    if (tagId === undefined) {
+    let tagsId = row?.id;
+    if (tagsId === undefined) {
         const [row] = await sql`
             SELECT id
             FROM ${sql.id(table)}
             WHERE name = ${name}
         `;
-        tagId = row.id;
+        tagsId = row.id;
     }
-    if (tagId === undefined) {
+    if (tagsId === undefined) {
         throw `Could not find ${table} "${t}" but could not insert it either...`;
     }
 
-    return tagId;
+    return tagsId;
 }
 
 /**
@@ -67,10 +67,10 @@ export async function build(copy, dest) {
         }
     }
     for (const tag of system.tags ?? []) {
-        const tagId = await insertTag(sql, tag);
+        const tagsId = await insertTag(sql, tag);
         await sql`
             INSERT INTO SystemTags
-                ${sql.insertValues({tagId})}
+                ${sql.insertValues({tagsId})}
         `;
     }
 
@@ -105,7 +105,7 @@ export async function build(copy, dest) {
         const TAGS_RE = /[(\[](?<tag>.*?)[)\]]/g;
         const SHORTNAME_RE = /^(?<name>.*?)\s*[(\[]/;
 
-        let {name, shortname, nameAlt, region, languages, year, tags, sources} = g;
+        let {name, shortname, nameAlt, region, languages, year, tags, sources, playlists} = g;
         shortname = shortname ?? (SHORTNAME_RE.exec(name)?.groups?.name ?? null);
 
         let tag;
@@ -124,7 +124,7 @@ export async function build(copy, dest) {
 
         let title = shortname ?? null;
         let originalTitle = nameAlt ?? null;
-        const [{id: gameId}] = await sql`
+        const [{id: gamesId}] = await sql`
             INSERT INTO GamesId
                 ${sql.insertValues({
                     fullname: name,
@@ -136,30 +136,30 @@ export async function build(copy, dest) {
 
         // Insert tags.
         await Promise.all(tags.map(async t => {
-            const tagId = await insertTag(sql, t);
+            const tagsId = await insertTag(sql, t);
             await sql`
                 INSERT INTO GamesTags
-                    ${sql.insertValues({gameId, tagId})}
+                    ${sql.insertValues({gamesId, tagsId})}
             `;
         }));
 
         // Insert regions.
         await Promise.all(regions.map(async r => {
-            const regionId = await insertTag(sql, r, "regions");
+            const regionsId = await insertTag(sql, r, "regions");
 
             await sql`
                 INSERT INTO GamesRegions
-                    ${sql.insertValues({gameId, regionId})}
+                    ${sql.insertValues({gamesId, regionsId})}
             `;
         }));
 
         // Insert languages.
         await Promise.all(languages.map(async l => {
-            const languageId = await insertTag(sql, l, "languages");
+            const languagesId = await insertTag(sql, l, "languages");
 
             await sql`
                 INSERT INTO GamesLanguages
-                    ${sql.insertValues({gameId, languageId})}
+                    ${sql.insertValues({gamesId, languagesId})}
             `;
         }));
 
@@ -170,11 +170,27 @@ export async function build(copy, dest) {
                 sha256 = Buffer.from(sha256, 'hex');
                 await sql`
                     INSERT INTO GamesSources
-                        ${sql.insertValues({gameId, sha256, size, extension})}
+                        ${sql.insertValues({gamesId, sha256, size, extension})}
                 `;
 
             }))
         }));
+
+        // Insert playlists.
+        if (playlists) {
+            await Promise.all(Object.entries(playlists).map(async ([name, priority]) => {
+                await sql`
+                    INSERT INTO Playlists ${sql.insertValues({name})}
+                    ON CONFLICT DO NOTHING
+                `;
+                const [{ id: playlistsId }] = await sql`SELECT id
+                                        FROM Playlists
+                                        WHERE name = ${name}`;
+                await sql`
+                    INSERT INTO PlaylistsGamesId ${sql.insertValues({ gamesId, playlistsId, priority })}
+                `;
+            }))
+        }
     }
 
     bar.stop();
